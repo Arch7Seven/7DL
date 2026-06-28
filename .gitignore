@@ -1,0 +1,10 @@
+
+/dist/
+/build/
+/tools/
+**/node_modules/
+
+.env*
+!.env.example
+dev.sqlite
+dev.db
