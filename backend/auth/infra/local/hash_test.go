@@ -10,7 +10,10 @@ func TestHashSamePassword(t *testing.T) {
 
 	hashConfig := config.GetAuthConfig().Hash
 
-	cred := genSaltAndPasswordHash(hashConfig, password)
+	cred, err := NewPasswordHash(hashConfig, password)
+	if err != nil {
+		t.Fatal(err.Error())
+	}
 
 	check := verifyPassword(hashConfig.Argon2Config, password, cred)
 

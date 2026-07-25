@@ -1,6 +1,8 @@
 package app
 
 import (
+	"7DL/auth/app"
+	"7DL/auth/infra/local"
 	"7DL/server"
 	"7DL/server/handler"
 	"net/http"
@@ -19,7 +21,10 @@ func ServerBootstrap() {
 	routes := server.NewRoutes()
 	srv := server.New(":8601", router)
 
-	authHandler := handler.NewAuthHandler()
+	authAdapter := local.New()
+	authApp := app.New(authAdapter)
+	authHandler := handler.NewAuthHandler(authApp)
+
 	router.Post(routes.Register(), authHandler.Register)
 	router.Post(routes.Login(), authHandler.Login)
 

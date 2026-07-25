@@ -3,19 +3,19 @@
 - transfers
 - settings
 
-### Users
-- id (PK)           (int, nonnull)
-- uuid              (string, uuid, nonnull)
-- username          (string, nonnull)
-- created_at        (int, timestamp, nonnul)
-- active            (bool, nonnul)
-- settings_id       (FK)
+### Identities
+- uuid                      (uuid, PK)
+- username                  (string, nonnul)
+- email                     (string, nullable)
+- password                  (string, hash, local only)
 
-### Credentials
-- uuid              (FK, PK)
-- password          (string, hash, local only)
+### Users
+- uuid                      (PK, FK (Identities uuid))
+- created_at                (int, timestamp, nonnul)
+- display_name              (string)
 
 ### Settings
+- uuid                      (PK, FK (Users uuid))
 - preferred_video_codec     (string, nullable)
 - preferred_audio_codec     (string, nullable)
 - cookies                   (json, nullable)

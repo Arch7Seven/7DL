@@ -2,8 +2,10 @@ package config
 
 type AuthConfig struct {
 	Hash              Hash
-	PasswordMaxLength int
 	UsernameMaxLength int
+	UsernameMinLength int
+	PasswordMaxLength int
+	PasswordMinLength int
 }
 type Hash struct {
 	Argon2Config Argon2Config
@@ -21,7 +23,9 @@ func GetAuthConfig() AuthConfig {
 
 	return AuthConfig{
 		PasswordMaxLength: 100,
+		PasswordMinLength: 8,
 		UsernameMaxLength: 32,
+		UsernameMinLength: 1,
 		Hash: Hash{
 			Argon2Config: Argon2Config{
 				Iteration: 3,

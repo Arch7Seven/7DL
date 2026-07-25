@@ -8,11 +8,6 @@ type UserCredentials struct {
 	PasswordHash string
 }
 
-type Credentials struct {
-	Salt         string
-	PasswordHash string
-}
-
 type LoginPayload struct {
 	Username string
 	Password string

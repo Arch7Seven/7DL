@@ -1,6 +1,8 @@
 package main
 
-import "7DL/app"
+import (
+	"7DL/app"
+)
 
 func main() {
 	app.New()

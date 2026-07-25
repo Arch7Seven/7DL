@@ -1,7 +1,6 @@
 package local
 
 import (
-	"7DL/auth/domain"
 	"7DL/config"
 	"crypto/rand"
 	"crypto/subtle"
@@ -9,6 +8,11 @@ import (
 
 	"golang.org/x/crypto/argon2"
 )
+
+type Credentials struct {
+	Salt         string
+	PasswordHash string
+}
 
 func generateSalt(size int) ([]byte, error) {
 	salt := make([]byte, size)
@@ -29,17 +33,20 @@ func generatePasswordHash(argonConfig config.Argon2Config, password string, salt
 	return base64.RawStdEncoding.EncodeToString(hash)
 }
 
-func genSaltAndPasswordHash(hashConfig config.Hash, password string) *domain.Credentials {
-	salt, _ := generateSalt(hashConfig.SaltSize) // manage error
+func NewPasswordHash(hashConfig config.Hash, password string) (*Credentials, error) {
+	salt, err := generateSalt(hashConfig.SaltSize)
+	if err != nil {
+		return nil, err
+	}
 	hash := generatePasswordHash(hashConfig.Argon2Config, password, salt)
 
-	return &domain.Credentials{
+	return &Credentials{
 		Salt:         base64.RawStdEncoding.EncodeToString(salt),
 		PasswordHash: hash,
-	}
+	}, nil
 }
 
-func verifyPassword(argonConfig config.Argon2Config, password string, credentials *domain.Credentials) bool {
+func verifyPassword(argonConfig config.Argon2Config, password string, credentials *Credentials) bool {
 
 	salt, _ := base64.RawStdEncoding.DecodeString(credentials.Salt)
 	hash, _ := base64.RawStdEncoding.DecodeString(credentials.PasswordHash)

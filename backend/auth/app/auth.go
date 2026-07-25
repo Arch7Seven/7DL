@@ -2,14 +2,18 @@ package app
 
 import "7DL/auth/domain"
 
-// TODO password char max : 100
-
 type AuthApp struct {
-	Adapter domain.AuthPort
+	adapter domain.AuthPort
+}
+
+func New(adapter domain.AuthPort) *AuthApp {
+	return &AuthApp{
+		adapter: adapter,
+	}
 }
 
 func (app *AuthApp) Register(username string, password string, email *string) {
-	app.Adapter.Register(&domain.RegisterPayload{
+	app.adapter.Register(&domain.RegisterPayload{
 		Username: username,
 		Password: password,
 		Email:    email,
@@ -17,7 +21,7 @@ func (app *AuthApp) Register(username string, password string, email *string) {
 }
 
 func (app *AuthApp) Login(username string, password string) {
-	app.Adapter.Login(&domain.LoginPayload{
+	app.adapter.Login(&domain.LoginPayload{
 		Username: username,
 		Password: password,
 	})
